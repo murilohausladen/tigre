@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pipeline de Projetos · Grupo Tigre</title>
+<style>
+@font-face{font-family:"Tigre Sans";font-weight:400;src:url(data:font/woff2;base64,__F400__) format("woff2")}
+@font-face{font-family:"Tigre Sans";font-weight:500;src:url(data:font/woff2;base64,__F500__) format("woff2")}
+@font-face{font-family:"Tigre Sans";font-weight:700;src:url(data:font/woff2;base64,__F700__) format("woff2")}
+@font-face{font-family:"Tigre Sans Expanded";font-weight:800;src:url(data:font/woff2;base64,__X800__) format("woff2")}
+:root{
+  --navy:#002375;--deep:#00004E;--blue:#0046BF;--sky:#2EA5FF;--slate:#5976AB;--orange:#E8731A;
+  --bg:#F3F4ED;--card:#FFFFFF;--line:#D9DCCB;--muted:#4F5B80;--ink:#00004E;
+}
+*{box-sizing:border-box}
+html{font-size:clamp(11px,.9vw,15px)}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:"Tigre Sans",system-ui,sans-serif}
+body{display:grid;grid-template-rows:auto auto auto minmax(0,1fr);gap:.55rem;padding:0 .8rem .8rem;min-width:900px}
+button{font:inherit;color:inherit;cursor:pointer}
+.hd{margin:0 -.8rem;height:3.6rem;display:flex;align-items:center;gap:1rem;padding:0 1.1rem;color:#fff;
+  background:radial-gradient(60% 160% at 100% 0%,#0088FF55 0%,transparent 70%),linear-gradient(90deg,#00004E 0%,#002375 60%,#0046BF 140%)}
+.hd img{height:2.1rem;width:auto;display:block}
+.hd h1{margin:0;font-size:1.25rem;font-weight:700;letter-spacing:.01em;line-height:1.1}
+.hd h1 small{display:block;font-size:.72rem;font-weight:500;color:#BFD9F7;letter-spacing:.04em;margin-top:.15rem}
+.hd .sp{flex:1}
+.st{display:flex;align-items:center;gap:.45rem;font-size:.75rem;font-weight:500;color:#DCE8FA}
+.st i{width:.55rem;height:.55rem;border-radius:50%;background:#9FB4DA;display:inline-block}
+.st.live i{background:var(--sky);box-shadow:0 0 0 3px #2EA5FF44}
+.st.off i{background:var(--orange)}
+.rf{border:1px solid #ffffff66;background:transparent;color:#fff;border-radius:999px;padding:.28rem .8rem;font-size:.75rem;font-weight:500}
+.rf:hover{background:#ffffff22}
+.fl{display:flex;align-items:center;gap:1.1rem;flex-wrap:nowrap;min-width:0}
+.fg{display:flex;align-items:center;gap:.4rem;min-width:0}
+.fg>span{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);white-space:nowrap}
+.dd{position:relative}
+.ddw{position:relative}
+.ddb{display:flex;align-items:center;justify-content:space-between;gap:.5rem;min-width:8.2rem;max-width:12rem;border:1px solid #B9C3DD;background:#fff;color:var(--navy);border-radius:.5rem;padding:.28rem .55rem .28rem .7rem;font-size:.76rem;font-weight:500}
+.ddb em{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ddb:hover,.ddb[aria-expanded=true]{border-color:var(--blue)}
+.ddb.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+.ddb svg{width:.7rem;height:.7rem;flex:none;transition:transform .15s}
+.ddb[aria-expanded=true] svg{transform:rotate(180deg)}
+.ddm{position:absolute;top:calc(100% + .25rem);left:0;z-index:20;min-width:100%;background:#fff;border:1px solid #B9C3DD;border-radius:.5rem;box-shadow:0 8px 22px #00004E33;padding:.25rem;display:flex;flex-direction:column;gap:1px}
+.ddi{display:flex;align-items:center;gap:.5rem;border:0;background:none;text-align:left;padding:.32rem .55rem;border-radius:.35rem;font-size:.76rem;font-weight:500;color:var(--navy);white-space:nowrap}
+.ddi:hover{background:#EEF1F8}
+.ddi i{width:.8rem;height:.8rem;border:1.5px solid #8A97BB;border-radius:3px;flex:none;position:relative}
+.ddi[aria-selected=true]{font-weight:700}
+.ddi[aria-selected=true] i{background:var(--navy);border-color:var(--navy)}
+.ddi[aria-selected=true] i::after{content:"";position:absolute;left:.22rem;top:.04rem;width:.2rem;height:.42rem;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.ddx{border:0;border-top:1px solid var(--line);background:none;margin-top:.2rem;padding:.4rem .55rem .2rem;text-align:left;font-size:.7rem;font-weight:700;color:var(--blue)}
+.clr{margin-left:auto;border:0;background:none;color:var(--blue);font-size:.74rem;font-weight:700;text-decoration:underline;white-space:nowrap}
+.cnt{font-size:.72rem;color:var(--muted);white-space:nowrap}
+.kp{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55rem}
+.k{background:var(--card);border:1px solid var(--line);border-radius:.7rem;padding:.5rem .8rem;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.k b{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.k strong{font-family:"Tigre Sans Expanded","Tigre Sans",sans-serif;font-weight:800;font-size:1.6rem;line-height:1.15;color:var(--navy);white-space:nowrap}
+.k strong small{font-family:"Tigre Sans",sans-serif;font-size:.75rem;font-weight:700;margin-left:.2rem}
+.k em{font-style:normal;font-size:.68rem;color:var(--muted)}
+.k.hero{background:var(--navy);border-color:var(--navy)}
+.k.hero b{color:#8FCBFF}.k.hero strong,.k.hero strong small{color:#fff}.k.hero em{color:#BFD9F7}
+.g{display:grid;gap:.55rem;grid-template-columns:1.1fr 1.25fr 1fr;grid-template-rows:minmax(0,1fr) minmax(0,1fr);min-height:0}
+.c{background:var(--card);border:1px solid var(--line);border-radius:.7rem;padding:.55rem .75rem .5rem;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
+.c.w2{grid-column:span 2}
+.ch{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.15rem;min-height:1.35rem}
+.ch h2{margin:0;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);white-space:nowrap}
+.ch h2 span{color:var(--muted);font-weight:500;letter-spacing:.02em;text-transform:none;margin-left:.35rem}
+.seg{display:flex;border:1px solid #B9C3DD;border-radius:999px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:.12rem .55rem;font-size:.66rem;font-weight:500;color:var(--navy)}
+.seg button[aria-pressed=true]{background:var(--navy);color:#fff;font-weight:700}
+.lg{display:flex;gap:.7rem;font-size:.66rem;color:var(--muted)}
+.lg i{display:inline-block;width:.65rem;height:.65rem;border-radius:2px;margin-right:.3rem;vertical-align:-1px}
+.cb{flex:1;min-height:0;min-width:0;position:relative}
+.cb svg{display:block;width:100%;height:100%}
+svg text{font-family:"Tigre Sans",system-ui,sans-serif;fill:var(--ink)}
+[data-f]{cursor:pointer}
+.dim{opacity:.35}
+.empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.8rem}
+#tip{position:fixed;z-index:9;display:none;pointer-events:none;background:var(--deep);color:#fff;border-radius:.45rem;padding:.4rem .6rem;font-size:.72rem;line-height:1.4;box-shadow:0 4px 14px #00004E44;max-width:20rem}
+#tip b{font-weight:700}#tip span{color:#9FD2FF}
+.gw{display:flex;height:100%;gap:.4rem}
+.gw>svg{flex:1.15;min-width:0}
+.gl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.5rem;min-width:0}
+.gr b{display:flex;justify-content:space-between;font-size:.68rem;font-weight:500;gap:.4rem}
+.gr b span:first-child{font-weight:700;color:var(--navy)}
+.gr b span:last-child{color:var(--muted);white-space:nowrap}
+.pb{height:.38rem;border-radius:99px;background:#E3E8F3;margin-top:.2rem;overflow:hidden}
+.pb i{display:block;height:100%;border-radius:99px;background:var(--blue);transition:width .6s}
+.gn{font-size:.64rem;color:var(--muted);line-height:1.25}
+.dw{display:flex;align-items:center;gap:.6rem;height:100%}
+.dl{flex:1;display:flex;flex-direction:column;gap:.3rem;font-size:.72rem;min-width:0}
+.dl div{display:flex;align-items:center;gap:.4rem;padding:.1rem .25rem;border-radius:.3rem}
+.dl div[data-f]:hover{background:#EEF1F8}
+.dl i{width:.7rem;height:.7rem;border-radius:3px;flex:none}
+.dl span{flex:1;font-weight:500}.dl b{font-weight:700;color:var(--navy)}.dl u{text-decoration:none;color:var(--muted);width:2.6rem;text-align:right}
+</style>
+</head>
+<body>
+<header class="hd">
+  <img alt="Grupo Tigre" src="data:image/png;base64,__LOGO__">
+  <h1>Pipeline de Projetos<small>Masterplan · Engenharia e Excelência Operacional</small></h1>
+  <div class="sp"></div>
+  <div class="st" id="st" role="status"><i></i><span id="stt">Carregando…</span></div>
+  <button class="rf" id="rf" type="button">Atualizar</button>
+</header>
+<section class="fl" id="fl" aria-label="Filtros"></section>
+<section class="kp" id="kp" aria-label="Indicadores"></section>
+<main class="g">
+  <section class="c"><div class="ch"><h2>Meta<span id="gsub"></span></h2></div><div class="cb" id="gauge"></div></section>
+  <section class="c"><div class="ch"><h2>Funil por portão<span>saving × CAPEX</span></h2></div><div class="cb" id="funnel"></div></section>
+  <section class="c"><div class="ch"><h2>Por BU</h2>
+    <div class="seg" id="dseg"><button type="button" data-dm="impacto_anual" aria-pressed="true">Impacto</button><button type="button" data-dm="capex" aria-pressed="false">CAPEX</button><button type="button" data-dm="n" aria-pressed="false">Projetos</button></div></div>
+    <div class="cb" id="donut"></div></section>
+  <section class="c w2"><div class="ch"><h2>Cascata de impacto<span id="wsub"></span></h2>
+    <div class="seg" id="wseg"><button type="button" data-wm="rampa" aria-pressed="true">Rampa 2026→anual</button><button type="button" data-wm="portao" aria-pressed="false">Por portão</button><button type="button" data-wm="area" aria-pressed="false">Por área</button></div></div>
+    <div class="cb" id="wf"></div></section>
+  <section class="c"><div class="ch"><h2>Por área</h2><div class="lg"><span><i style="background:#0046BF"></i>Impacto anual</span><span><i style="background:#2EA5FF"></i>CAPEX</span></div></div><div class="cb" id="bars"></div></section>
+</main>
+<div id="tip"></div>
+<script>
+const CFG={url:"__SBURL__",key:"__SBKEY__",refreshMs:120000};
+const SNAP=__SNAP__;
+let DATA=SNAP.projetos, METAS=SNAP.metas, LOADED=SNAP.at;
+const GATES=["P0","P1","P2","P3","P4"];
+const F={portao:new Set(),area:new Set(),eleg:new Set(),bu:new Set()};
+let dMetric="impacto_anual", wMode="rampa";
+const $=id=>document.getElementById(id);
+const num=v=>v==null||v===""?0:Number(v);
+const sum=(R,k)=>R.reduce((s,r)=>s+num(r[k]),0);
+const nf=(v,d=1)=>(v/1e6).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const int=v=>Math.round(v).toLocaleString("pt-BR");
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const eKey=r=>r.elegivel_2026||"nao";
+const uniq=(k,pref)=>{const s=[...new Set(DATA.map(r=>r[k]).filter(Boolean))];return [...pref.filter(p=>s.includes(p)),...s.filter(x=>!pref.includes(x)).sort()]};
+const AREAS=()=>uniq("area",["Engenharia","Materiais","Manut/CDM","P&D"]);
+const BUS=()=>uniq("bu",["BR","CORP","LATAM","USA"]);
+const BUCOL={BR:"#002375",CORP:"#0046BF",LATAM:"#2EA5FF",USA:"#E8731A"};
+const EXTRA=["#00004E","#0088FF","#9FB4DA","#B45309"];
+const buCol=(b,i)=>BUCOL[b]||EXTRA[i%EXTRA.length];
+const FS=()=>parseFloat(getComputedStyle(document.documentElement).fontSize)||12;
+const box=el=>{const r=el.getBoundingClientRect();return [Math.floor(r.width),Math.floor(r.height)]};
+function rows(){return DATA.filter(r=>(!F.portao.size||F.portao.has(r.portao))&&(!F.area.size||F.area.has(r.area))&&(!F.eleg.size||F.eleg.has(eKey(r)))&&(!F.bu.size||F.bu.has(r.bu)))}
+function niceTicks(max,n=3){if(!(max>0))return{ticks:[0],max:1};const raw=max/n,p=Math.pow(10,Math.floor(Math.log10(raw)));const m=[1,2,2.5,5,10].find(x=>x*p>=raw)*p;const t=[];for(let v=0;v<=max+m*.001;v+=m)t.push(v);if(t[t.length-1]<max)t.push(t[t.length-1]+m);return{ticks:t,max:t[t.length-1]}}
+
+/* ---------- filtros ---------- */
+let openDD=null;
+const CARET='<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4.2 6 8l4-3.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function drawFilters(){
+  const g=(key,label,vals,lab)=>{
+    const sel=[...F[key]],nm=v=>lab?lab[v]||v:v,open=openDD===key;
+    const txt=!sel.length?"Todos":sel.length<=2?sel.map(nm).join(", "):sel.length+" selecionados";
+    return `<div class="fg dd"><span>${label}</span><div class="ddw"><button type="button" class="ddb ${sel.length?"on":""}" data-dd="${key}" aria-haspopup="listbox" aria-expanded="${open}"><em>${esc(txt)}</em>${CARET}</button>`+
+      (open?`<div class="ddm" role="listbox" aria-multiselectable="true">${vals.map(v=>`<button type="button" role="option" class="ddi" data-f="${key}|${esc(v)}" aria-selected="${F[key].has(v)}"><i></i>${esc(nm(v))}</button>`).join("")}${sel.length?`<button type="button" class="ddx" data-fc="${key}">Limpar seleção</button>`:""}</div>`:"")+`</div></div>`;
+  };
+  $("fl").innerHTML=g("portao","Portão",GATES)+g("area","Área",AREAS())+g("eleg","Elegível 2026",["x","xx","nao"],{x:"x",xx:"xx",nao:"Não"})+g("bu","BU",BUS())+
+   `<span class="cnt" id="cnt"></span><button type="button" class="clr" id="clr">Limpar filtros</button>`;
+}
+function toggle(key,val){const s=F[key];s.has(val)?s.delete(val):s.add(val);render()}
+
+/* ---------- KPIs ---------- */
+function drawKpis(R){
+  const imp=sum(R,"impacto_anual"),cap=sum(R,"capex"),i26=sum(R,"impacto_2026");
+  const pb=imp>0?cap/imp:null;
+  const K=(cls,l,v,u,s)=>`<div class="k ${cls}"><b>${l}</b><strong>${v}${u?`<small>${u}</small>`:""}</strong><em>${s}</em></div>`;
+  $("kp").innerHTML=
+   K("","Nº de projetos",int(R.length),"",`de ${int(DATA.length)} no pipeline`)+
+   K("hero","Impacto anual (saving)","R$ "+nf(imp),"MM","run-rate anualizado")+
+   K("","CAPEX","R$ "+nf(cap),"MM","investimento previsto")+
+   K("","Impacto em 2026","R$ "+nf(i26),"MM",imp>0?`${Math.round(i26/imp*100)}% do impacto anual`:"—")+
+   K("","Payback simples",pb==null?"—":pb.toLocaleString("pt-BR",{maximumFractionDigits:1}),pb==null?"":"anos","CAPEX ÷ impacto anual");
+  $("cnt").textContent=`${int(R.length)} de ${int(DATA.length)} projetos`;
+}
+
+/* ---------- velocímetro ---------- */
+function metaFor(){
+  const M=Object.fromEntries(METAS.map(m=>[m.escopo,m])),sel=[...F.area];
+  if(!sel.length){const m=M["Masterplan"];return m?{m0:+m.meta_p0,m1:+m.meta_p1,m2:+m.meta_p2,label:"Masterplan · "+(m.responsavel||"")}:{err:"Cadastre a linha “Masterplan” na tabela metas"}}
+  const miss=sel.filter(a=>!M[a]);
+  if(miss.length)return{err:"Sem meta cadastrada para "+miss.join(", ")+" (tabela metas)"};
+  return{m0:sel.reduce((s,a)=>s+ +M[a].meta_p0,0),m1:sel.reduce((s,a)=>s+ +M[a].meta_p1,0),m2:sel.reduce((s,a)=>s+ +M[a].meta_p2,0),
+    label:sel.length===1?sel[0]+" · "+(M[sel[0]].responsavel||""):sel.join(" + ")};
+}
+const GX=120,GY=118,GR=92;
+const pt=(p,r)=>{const a=Math.PI*(1-p/120);return[GX+r*Math.cos(a),GY-r*Math.sin(a)]};
+const arc=(p1,p2,r)=>{const[a,b]=pt(p1,r),[c,d]=pt(p2,r);return`M${a.toFixed(1)} ${b.toFixed(1)}A${r} ${r} 0 0 1 ${c.toFixed(1)} ${d.toFixed(1)}`};
+function drawGauge(R){
+  const m=metaFor(),el=$("gauge");
+  const P=[sum(R.filter(r=>r.p0),"impacto_anual"),sum(R.filter(r=>r.p1),"impacto_anual"),sum(R.filter(r=>r.p2),"impacto_anual")];
+  if(m.err){$("gsub").textContent="";el.innerHTML=`<div class="empty">${esc(m.err)}</div>`;return}
+  $("gsub").textContent=m.label;
+  const M=[m.m0,m.m1,m.m2],f=P.map((v,i)=>Math.min(v/M[i],1));
+  const score=80*f[0]+20*f[1]+20*f[2];
+  const names=["P0 aprovados","P1 aprovados","P2 aprovados"],tiers=["80%","100%","120%"];
+  const tick=[[0,"0"],[80,"80%"],[100,"100%"],[120,"120%"]].map(([p,t])=>{const[x,y]=pt(p,GR+19);return`<text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" font-size="9" font-weight="500" text-anchor="middle" style="fill:#4F5B80">${t}</text>`}).join("");
+  if(!el.firstChild||!el.querySelector("#nd")){
+    el.innerHTML=`<div class="gw"><svg viewBox="-12 0 264 168" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Velocímetro de atingimento da meta">
+      <path d="${arc(0,80,GR)}" stroke="#C9D6EE" stroke-width="16" fill="none"/>
+      <path d="${arc(80.7,99.3,GR)}" stroke="#2EA5FF" stroke-width="16" fill="none"/>
+      <path d="${arc(100.7,120,GR)}" stroke="#0046BF" stroke-width="16" fill="none"/>
+      ${tick}
+      <g id="nd" style="transform-origin:${GX}px ${GY}px;transition:transform .9s cubic-bezier(.2,.8,.2,1)"><path d="M${GX-3.5} ${GY}L${GX} ${GY-80}L${GX+3.5} ${GY}Z" fill="#00004E"/></g>
+      <circle cx="${GX}" cy="${GY}" r="7" fill="#00004E"/><circle cx="${GX}" cy="${GY}" r="2.6" fill="#fff"/>
+      <text id="gs" x="${GX}" y="152" text-anchor="middle" font-size="22" font-weight="800" style="font-family:'Tigre Sans Expanded','Tigre Sans',sans-serif"></text>
+      <text x="${GX}" y="164" text-anchor="middle" font-size="8" font-weight="500" style="fill:#4F5B80">da meta (impacto anual)</text></svg><div class="gl" id="gl"></div></div>`;
+    $("nd").style.transform="rotate(-90deg)";void $("nd").getBoundingClientRect();
+  }
+  $("nd").style.transform=`rotate(${-90+score/120*180}deg)`;
+  $("gs").textContent=Math.round(score)+"%";
+  $("gl").innerHTML=names.map((n,i)=>`<div class="gr" data-tip="<b>${n}</b><br>Realizado: R$ ${nf(P[i])} MM<br>Meta: R$ ${nf(M[i])} MM"><b><span>${tiers[i]} · ${n}</span><span>${nf(P[i])} / ${nf(M[i])} MM</span></b><div class="pb"><i style="width:${f[i]*100}%"></i></div></div>`).join("")+
+    `<div class="gn">80% = P0 cobrindo a meta · +20% = P1 ≥ 50% do roadmap · +20% = P2 ≥ 50% do pipeline de P1. Considera os filtros ativos.</div>`;
+}
+
+/* ---------- funil ---------- */
+function drawFunnel(R){
+  const el=$("funnel"),[w,h]=box(el);if(w<50||h<50)return;const fs=FS();
+  const d=GATES.map(g=>{const r=R.filter(x=>x.portao===g);return{g,n:r.length,s:sum(r,"impacto_anual"),c:sum(r,"capex")}});
+  const top=fs*1.3,rh=(h-top)/d.length,cw=fs*4.6,lab=fs*3.4,half=(w-cw)/2,L=half-lab,cx0=half,cx1=half+cw;
+  const sM=Math.max(...d.map(x=>x.s),1),cM=Math.max(...d.map(x=>x.c),1),bh=Math.min(rh*.66,fs*2.2);
+  let o=`<text x="${cx0-4}" y="${fs*.9}" text-anchor="end" font-size="${fs*.62}" font-weight="700" letter-spacing=".06em" style="fill:#0046BF">SAVING · R$ MM</text><text x="${cx1+4}" y="${fs*.9}" font-size="${fs*.62}" font-weight="700" letter-spacing=".06em" style="fill:#2178C7">CAPEX · R$ MM</text>`;
+  d.forEach((x,i)=>{
+    const y=top+i*rh,yb=y+(rh-bh)/2,sw=Math.max(x.s/sM*L,x.s>0?2:0),cwid=Math.max(x.c/cM*L,x.c>0?2:0);
+    const sel=!F.portao.size||F.portao.has(x.g),tip=`<b>Portão ${x.g}</b> · ${x.n} projetos<br><span>Saving:</span> R$ ${nf(x.s)} MM<br><span>CAPEX:</span> R$ ${nf(x.c)} MM`;
+    o+=`<g class="${sel?"":"dim"}" data-f="portao|${x.g}" data-tip="${esc(tip)}">
+      <rect x="0" y="${y}" width="${w}" height="${rh}" fill="transparent"/>
+      <rect x="${cx0-sw}" y="${yb}" width="${sw}" height="${bh}" rx="${Math.min(4,bh/2)}" fill="#0046BF"/>
+      <rect x="${cx1}" y="${yb}" width="${cwid}" height="${bh}" rx="${Math.min(4,bh/2)}" fill="#2EA5FF"/>
+      <text x="${cx0-sw-4}" y="${yb+bh/2+fs*.3}" text-anchor="end" font-size="${fs*.78}" font-weight="700">${nf(x.s)}</text>
+      <text x="${cx1+cwid+4}" y="${yb+bh/2+fs*.3}" font-size="${fs*.78}" font-weight="700">${nf(x.c)}</text>
+      <text x="${half+cw/2}" y="${y+rh/2+fs*.05}" text-anchor="middle" font-size="${fs*.95}" font-weight="800" style="font-family:'Tigre Sans Expanded','Tigre Sans',sans-serif;fill:#002375">${x.g}</text>
+      <text x="${half+cw/2}" y="${y+rh/2+fs*.95}" text-anchor="middle" font-size="${fs*.62}" style="fill:#4F5B80">${x.n} proj.</text></g>`;
+  });
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Funil de saving e CAPEX por portão">${o}</svg>`;
+}
+
+/* ---------- pizza (rosca) ---------- */
+function drawDonut(R){
+  const el=$("donut"),[w,h]=box(el);if(w<50||h<50)return;const fs=FS();
+  const bus=BUS(),val=r=>dMetric==="n"?r.length:sum(r,dMetric);
+  const d=bus.map((b,i)=>({b,v:val(R.filter(r=>r.bu===b)),c:buCol(b,i)})).filter(x=>x.v>0);
+  const tot=d.reduce((s,x)=>s+x.v,0);
+  if(!tot){el.innerHTML=`<div class="empty">Sem dados nos filtros</div>`;return}
+  const fmt=v=>dMetric==="n"?int(v):nf(v),unit=dMetric==="n"?"projetos":"R$ MM";
+  const S=Math.min(h,w*.55),cx=S/2,cy=S/2,ro=S/2-3,ri=ro*.6;
+  const P=(a,r)=>[cx+r*Math.sin(a),cy-r*Math.cos(a)];
+  let a0=0,o="";
+  d.forEach(x=>{
+    const f=x.v/tot,a1=a0+f*2*Math.PI,sel=!F.bu.size||F.bu.has(x.b),tip=`<b>${esc(x.b)}</b><br>${fmt(x.v)} ${unit} · ${(f*100).toFixed(0)}%`;
+    if(d.length===1)o+=`<circle cx="${cx}" cy="${cy}" r="${(ro+ri)/2}" fill="none" stroke="${x.c}" stroke-width="${ro-ri}" class="${sel?"":"dim"}" data-f="bu|${esc(x.b)}" data-tip="${esc(tip)}"/>`;
+    else{const[p1,q1]=P(a0,ro),[p2,q2]=P(a1,ro),[p3,q3]=P(a1,ri),[p4,q4]=P(a0,ri),lg=f>.5?1:0;
+      o+=`<path d="M${p1} ${q1}A${ro} ${ro} 0 ${lg} 1 ${p2} ${q2}L${p3} ${q3}A${ri} ${ri} 0 ${lg} 0 ${p4} ${q4}Z" fill="${x.c}" stroke="#fff" stroke-width="2" class="${sel?"":"dim"}" data-f="bu|${esc(x.b)}" data-tip="${esc(tip)}"/>`}
+    a0=a1;
+  });
+  o+=`<text x="${cx}" y="${cy+fs*.35}" text-anchor="middle" font-size="${fs*1.25}" font-weight="800" style="font-family:'Tigre Sans Expanded','Tigre Sans',sans-serif;fill:#002375">${fmt(tot)}</text><text x="${cx}" y="${cy+fs*1.4}" text-anchor="middle" font-size="${fs*.64}" style="fill:#4F5B80">${unit}</text>`;
+  el.innerHTML=`<div class="dw"><svg viewBox="0 0 ${S} ${S}" width="${S}" height="${S}" style="flex:none;width:${S}px;height:${S}px" role="img" aria-label="Distribuição por BU">${o}</svg>
+   <div class="dl">${d.map(x=>`<div data-f="bu|${esc(x.b)}" class="${!F.bu.size||F.bu.has(x.b)?"":"dim"}"><i style="background:${x.c}"></i><span>${esc(x.b)}</span><b>${fmt(x.v)}</b><u>${(x.v/tot*100).toFixed(0)}%</u></div>`).join("")}</div></div>`;
+}
+
+/* ---------- cascata ---------- */
+function drawWaterfall(R){
+  const el=$("wf"),[w,h]=box(el);if(w<80||h<60)return;const fs=FS();let items;
+  if(wMode==="rampa"){const a=sum(R,"impacto_2026"),b=sum(R,"impacto_2027"),c=sum(R,"impacto_anual");
+    items=[{l:"Impacto 2026",v:a,t:"t",tip:"Impacto previsto em 2026"},{l:"Δ até 2027",v:b-a,t:"d",tip:"Impacto 2027 − impacto 2026"},{l:"Δ pós-2027",v:c-b,t:"d",tip:"Impacto anual − impacto 2027 (inclui projetos ainda sem cronograma)"},{l:"Impacto anual",v:c,t:"t",tip:"Run-rate anualizado"}];$("wsub").textContent="R$ MM";}
+  else{const key=wMode==="portao"?"portao":"area",cats=wMode==="portao"?GATES:AREAS();
+    items=cats.map(k=>({l:wMode==="portao"?"Portão "+k:k,v:sum(R.filter(r=>r[key]===k),"impacto_anual"),t:"d",tip:"Impacto anual"}));
+    items.push({l:"Total",v:items.reduce((s,i)=>s+i.v,0),t:"t",tip:"Impacto anual total"});$("wsub").textContent="impacto anual · R$ MM";}
+  let cum=0,hi=0;items.forEach(i=>{if(i.t==="t"){i.y0=0;i.y1=i.v;cum=i.v}else{i.y0=cum;i.y1=cum+i.v;cum+=i.v}hi=Math.max(hi,i.y0,i.y1)});
+  if(hi<=0){el.innerHTML=`<div class="empty">Sem dados nos filtros</div>`;return}
+  const nt=niceTicks(hi,3),padL=fs*2.6,padB=fs*1.7,padT=fs*1.1,pw=w-padL-fs*.4,ph=h-padB-padT;
+  const Y=v=>padT+ph-(v/nt.max)*ph,slot=pw/items.length,bw=Math.min(slot*.58,fs*5.5);
+  let o=nt.ticks.map(t=>`<line x1="${padL}" x2="${w-fs*.4}" y1="${Y(t)}" y2="${Y(t)}" stroke="#E3E6D8"/><text x="${padL-6}" y="${Y(t)+fs*.28}" text-anchor="end" font-size="${fs*.66}" style="fill:#4F5B80">${nf(t,t>=1e7?0:1)}</text>`).join("");
+  items.forEach((i,k)=>{
+    const x=padL+slot*k+(slot-bw)/2,yt=Y(Math.max(i.y0,i.y1)),yb=Y(Math.min(i.y0,i.y1)),bh=Math.max(yb-yt,1),neg=i.t==="d"&&i.v<0;
+    const fill=i.t==="t"?"#002375":neg?"#E8731A":"#0046BF",lab=(i.t==="d"&&i.v>0?"+":"")+nf(i.v);
+    o+=`<rect x="${x}" y="${yt}" width="${bw}" height="${bh}" rx="3" fill="${fill}" data-tip="${esc(`<b>${i.l}</b><br>R$ ${lab} MM<br><span>${i.tip}</span>`)}"/>`;
+    if(k<items.length-1)o+=`<line x1="${x+bw}" x2="${x+slot}" y1="${Y(i.y1)}" y2="${Y(i.y1)}" stroke="#8A97BB" stroke-dasharray="3 3"/>`;
+    o+=`<text x="${x+bw/2}" y="${yt-5}" text-anchor="middle" font-size="${fs*.8}" font-weight="700">${lab}</text><text x="${x+bw/2}" y="${h-fs*.45}" text-anchor="middle" font-size="${fs*.72}" font-weight="500" style="fill:#2B3763">${esc(i.l)}</text>`;
+  });
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Cascata de impacto">${o}</svg>`;
+}
+
+/* ---------- barras por área ---------- */
+function drawBars(R){
+  const el=$("bars"),[w,h]=box(el);if(w<80||h<60)return;const fs=FS();
+  const d=AREAS().map(a=>{const r=R.filter(x=>x.area===a);return{a,n:r.length,s:sum(r,"impacto_anual"),c:sum(r,"capex")}}).sort((x,y)=>y.s-x.s);
+  const mx=Math.max(...d.map(x=>Math.max(x.s,x.c)),1),lw=fs*5.2,vw=fs*2.8,L=w-lw-vw,rh=h/d.length,bh=Math.min(rh*.3,fs*1.1);
+  let o="";
+  d.forEach((x,i)=>{
+    const y=i*rh,sel=!F.area.size||F.area.has(x.a),tip=`<b>${esc(x.a)}</b> · ${x.n} projetos<br><span>Impacto:</span> R$ ${nf(x.s)} MM<br><span>CAPEX:</span> R$ ${nf(x.c)} MM`;
+    const sw=Math.max(x.s/mx*L,x.s>0?2:0),cw=Math.max(x.c/mx*L,x.c>0?2:0),yy=y+rh/2-bh-1;
+    o+=`<g class="${sel?"":"dim"}" data-f="area|${esc(x.a)}" data-tip="${esc(tip)}"><rect x="0" y="${y}" width="${w}" height="${rh}" fill="transparent"/>
+      <text x="0" y="${y+rh/2+fs*.3}" font-size="${fs*.8}" font-weight="700" style="fill:#002375">${esc(x.a)}</text>
+      <rect x="${lw}" y="${yy}" width="${sw}" height="${bh}" rx="3" fill="#0046BF"/><text x="${lw+sw+4}" y="${yy+bh-1}" font-size="${fs*.7}" font-weight="700">${nf(x.s)}</text>
+      <rect x="${lw}" y="${yy+bh+2}" width="${cw}" height="${bh}" rx="3" fill="#2EA5FF"/><text x="${lw+cw+4}" y="${yy+2*bh+1}" font-size="${fs*.7}" font-weight="500" style="fill:#2B3763">${nf(x.c)}</text></g>`;
+  });
+  el.innerHTML=`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Impacto e CAPEX por área">${o}</svg>`;
+}
+
+/* ---------- orquestração ---------- */
+function drawCharts(){const R=rows();drawGauge(R);drawFunnel(R);drawDonut(R);drawWaterfall(R);drawBars(R)}
+function render(){const R=rows();drawFilters();drawKpis(R);drawCharts()}
+function setStatus(c,t){$("st").className="st "+c;$("stt").textContent=t}
+async function load(){
+  setStatus("","Atualizando…");
+  try{
+    const H={apikey:CFG.key,Authorization:"Bearer "+CFG.key},ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),8000);
+    const [p,m]=await Promise.all([fetch(CFG.url+"/rest/v1/projetos?select=*&order=id&limit=5000",{headers:H,signal:ctl.signal}),fetch(CFG.url+"/rest/v1/metas?select=*&order=id",{headers:H,signal:ctl.signal})]);
+    clearTimeout(to);
+    if(!p.ok||!m.ok)throw new Error("HTTP "+p.status+"/"+m.status);
+    DATA=await p.json();METAS=await m.json();
+    setStatus("live","Supabase · ao vivo · "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}));
+  }catch(e){setStatus("off","Dados locais ("+LOADED+") · Supabase indisponível")}
+  render();
+}
+document.addEventListener("click",e=>{
+  if(openDD&&!e.target.closest(".dd")){openDD=null;drawFilters();$("cnt").textContent=`${int(rows().length)} de ${int(DATA.length)} projetos`}
+  const dd=e.target.closest("[data-dd]");if(dd){const k=dd.dataset.dd;openDD=openDD===k?null:k;drawFilters();$("cnt").textContent=`${int(rows().length)} de ${int(DATA.length)} projetos`;return}
+  const fc=e.target.closest("[data-fc]");if(fc){F[fc.dataset.fc].clear();return render()}
+  const f=e.target.closest("[data-f]");if(f){const[k,v]=f.getAttribute("data-f").split("|");return toggle(k,v)}
+  if(e.target.closest("#clr")){Object.values(F).forEach(s=>s.clear());openDD=null;return render()}
+  const dm=e.target.closest("[data-dm]");if(dm){dMetric=dm.dataset.dm;document.querySelectorAll("[data-dm]").forEach(b=>b.setAttribute("aria-pressed",b===dm));return drawDonut(rows())}
+  const wm=e.target.closest("[data-wm]");if(wm){wMode=wm.dataset.wm;document.querySelectorAll("[data-wm]").forEach(b=>b.setAttribute("aria-pressed",b===wm));return drawWaterfall(rows())}
+  if(e.target.closest("#rf"))load();
+});
+const tip=$("tip");
+document.addEventListener("mousemove",e=>{
+  const t=e.target.closest&&e.target.closest("[data-tip]");if(!t){tip.style.display="none";return}
+  tip.innerHTML=t.getAttribute("data-tip");tip.style.display="block";
+  const r=tip.getBoundingClientRect();let x=e.clientX+14,y=e.clientY+14;
+  if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;
+  tip.style.left=x+"px";tip.style.top=y+"px";
+});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&openDD){openDD=null;drawFilters();$("cnt").textContent=`${int(rows().length)} de ${int(DATA.length)} projetos`}});
+let raf;addEventListener("resize",()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(drawCharts)});
+render();load();setInterval(load,CFG.refreshMs);
+</script>
+</body>
+</html>
